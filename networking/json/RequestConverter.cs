@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using networking.dto;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace networking
+namespace networking.json
 {
     class RequestConverter : JsonCreationConverter<Request>
     {

@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using model;
 using networking.dto;
+using networking.json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -229,13 +230,13 @@ namespace networking
         {
             if (response.Type == ResponseType.BORROW_BOOK)
             {
-                BookQuantityDTO bookQuantityDto = (BookQuantityDTO)response.Data;
-                client.bookUpdated(bookQuantityDto.BookId, bookQuantityDto.NewQuantity);
+                BookBorrowedDTO bookBorrowedDto = (BookBorrowedDTO)response.Data;
+                client.bookUpdated(bookBorrowedDto.BookId, bookBorrowedDto.NewQuantity, bookBorrowedDto.ByThisUser);
             }
             if (response.Type == ResponseType.RETURN_BOOK)
             {
-                BookDTO bookDto = (BookDTO)response.Data;
-                client.bookReturned(bookDto.Id, bookDto.Author, bookDto.Title);
+                BookReturnedDTO bookReturnedDto = (BookReturnedDTO)response.Data;
+                client.bookReturned(bookReturnedDto.Id, bookReturnedDto.Author, bookReturnedDto.Title, bookReturnedDto.ByThisUser);
             }
         }
 

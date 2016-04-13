@@ -5,7 +5,7 @@ using networking.dto;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace networking
+namespace networking.json
 {
     class ResponseConverter : JsonCreationConverter<Response>
     {
@@ -56,14 +56,14 @@ namespace networking
             if (type.Equals(ResponseType.BORROW_BOOK.ToString()))
             {
                 JsonSerializer jsonSerializer = new JsonSerializer();
-                BookQuantityDTO bookQuantityDto = jsonSerializer.Deserialize<BookQuantityDTO>(jObject.Property("data").Value.CreateReader());
-                return new Response(ResponseType.BORROW_BOOK, bookQuantityDto);
+                BookBorrowedDTO bookBorrowedDto = jsonSerializer.Deserialize<BookBorrowedDTO>(jObject.Property("data").Value.CreateReader());
+                return new Response(ResponseType.BORROW_BOOK, bookBorrowedDto);
             }
             if (type.Equals(ResponseType.RETURN_BOOK.ToString()))
             {
                 JsonSerializer jsonSerializer = new JsonSerializer();
-                BookDTO bookDto = jsonSerializer.Deserialize<BookDTO>(jObject.Property("data").Value.CreateReader());
-                return new Response(ResponseType.RETURN_BOOK, bookDto);
+                BookReturnedDTO bookReturnedDto = jsonSerializer.Deserialize<BookReturnedDTO>(jObject.Property("data").Value.CreateReader());
+                return new Response(ResponseType.RETURN_BOOK, bookReturnedDto);
             }
             throw new ApplicationException(String.Format("The given vehicle type {0} is not supported!", type));
         }

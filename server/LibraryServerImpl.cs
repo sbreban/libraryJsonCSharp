@@ -63,7 +63,14 @@ namespace server
             int newQuantity = bookRepository.borrowBook(userId, bookId);
             foreach (KeyValuePair<int, ILibraryClient> pair in loggedClients)
             {
-                pair.Value.bookUpdated(bookId, newQuantity);
+                if (pair.Key != userId)
+                {
+                    pair.Value.bookUpdated(bookId, newQuantity, false);
+                }
+                else
+                {
+                    pair.Value.bookUpdated(bookId, newQuantity, true);
+                }
             }
         }
 
@@ -72,7 +79,14 @@ namespace server
             Book returned = bookRepository.returnBook(userId, bookId);
             foreach (KeyValuePair<int, ILibraryClient> pair in loggedClients)
             {
-                pair.Value.bookReturned(returned.Id, returned.Author, returned.Title);
+                if (pair.Key != userId)
+                {
+                    pair.Value.bookReturned(returned.Id, returned.Author, returned.Title, false);
+                }
+                else
+                {
+                    pair.Value.bookReturned(returned.Id, returned.Author, returned.Title, true);
+                }
             }
         }
     }

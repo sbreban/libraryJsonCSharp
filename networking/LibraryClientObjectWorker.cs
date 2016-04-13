@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using model;
 using networking.dto;
+using networking.json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -91,16 +92,16 @@ namespace networking
             }
         }
 
-        public void bookUpdated(int bookId, int newQuantity)
+        public void bookUpdated(int bookId, int newQuantity, bool byThisUser)
         {
-            BookQuantityDTO bookQuantityDto = new BookQuantityDTO(bookId, newQuantity);
-            sendResponse(new Response(ResponseType.BORROW_BOOK, bookQuantityDto));
+            BookBorrowedDTO bookBorrowedDto = new BookBorrowedDTO(bookId, newQuantity, byThisUser);
+            sendResponse(new Response(ResponseType.BORROW_BOOK, bookBorrowedDto));
         }
 
-        public void bookReturned(int bookId, string author, string title)
+        public void bookReturned(int bookId, string author, string title, bool byThisUser)
         {
-            BookDTO bookDto = new BookDTO(bookId, author, title);
-            sendResponse(new Response(ResponseType.RETURN_BOOK, bookDto));
+            BookReturnedDTO bookReturnedDto = new BookReturnedDTO(bookId, author, title, byThisUser);
+            sendResponse(new Response(ResponseType.RETURN_BOOK, bookReturnedDto));
         }
 
         private Response handleRequest(Request request)

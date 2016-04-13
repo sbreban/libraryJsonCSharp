@@ -59,18 +59,18 @@ namespace client
             return server.searchBooks(searchKey);
         }
 
-        public void bookUpdated(int bookId, int newQuantity)
+        public void bookUpdated(int bookId, int newQuantity, bool byThisUser)
         {
-            BookQuantityDTO bookQuantityDto = new BookQuantityDTO(bookId, newQuantity);
-            LibraryUserEventArgs libraryUserEventArgs = new LibraryUserEventArgs(LibraryUserEvent.BookUpdated, bookQuantityDto);
+            BookBorrowedDTO bookBorrowedDto = new BookBorrowedDTO(bookId, newQuantity, byThisUser);
+            LibraryUserEventArgs libraryUserEventArgs = new LibraryUserEventArgs(LibraryUserEvent.BookBorrowed, bookBorrowedDto);
             Console.WriteLine("Book updated");
             OnUserEvent(libraryUserEventArgs);
         }
 
-        public void bookReturned(int bookId, string author, string title)
+        public void bookReturned(int bookId, string author, string title, bool byThisUser)
         {
-            BookDTO bookDto = new BookDTO(bookId, author, title);
-            LibraryUserEventArgs libraryUserEventArgs = new LibraryUserEventArgs(LibraryUserEvent.BookReturned, bookDto);
+            BookReturnedDTO bookReturnedDto = new BookReturnedDTO(bookId, author, title, byThisUser);
+            LibraryUserEventArgs libraryUserEventArgs = new LibraryUserEventArgs(LibraryUserEvent.BookReturned, bookReturnedDto);
             Console.WriteLine("Book returned");
             OnUserEvent(libraryUserEventArgs);
         }

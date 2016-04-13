@@ -3,15 +3,17 @@
 namespace networking.dto
 {
     [Serializable]
-    public class BookQuantityDTO
+    public class BookBorrowedDTO
     {
         private int bookId;
         private int newQuantity;
+        private bool byThisUser;
 
-        public BookQuantityDTO(int bookId, int newQuantity)
+        public BookBorrowedDTO(int bookId, int newQuantity, bool byThisUser)
         {
             this.bookId = bookId;
             this.newQuantity = newQuantity;
+            this.byThisUser = byThisUser;
         }
 
         public int BookId
@@ -24,6 +26,12 @@ namespace networking.dto
         {
             get { return newQuantity; }
             set { newQuantity = value; }
+        }
+
+        public bool ByThisUser
+        {
+            get { return byThisUser; }
+            set { byThisUser = value; }
         }
     }
 }

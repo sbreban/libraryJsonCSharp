@@ -50,49 +50,53 @@ namespace client
 
         public void userUpdate(object sender, LibraryUserEventArgs e)
         {
-            if (e.UserEventType == LibraryUserEvent.BookUpdated)
+            if (e.UserEventType == LibraryUserEvent.BookBorrowed)
             {
-                BookQuantityDTO bookQuantityDto = (BookQuantityDTO)e.Data;
+                BookBorrowedDTO bookBorrowedDto = (BookBorrowedDTO)e.Data;
                 Book updated = null;
                 foreach (Book availableBook in availableBooks)
                 {
-                    if (availableBook.Id == bookQuantityDto.BookId)
+                    if (availableBook.Id == bookBorrowedDto.BookId)
                     {
                         updated = availableBook;
                     }
                 }
-                if (bookQuantityDto.NewQuantity == 0)
+                if (bookBorrowedDto.NewQuantity == 0)
                 {
                     availableBooks.Remove(updated);
                 }
                 else
                 {
-                    updated.Available = bookQuantityDto.NewQuantity;
+                    updated.Available = bookBorrowedDto.NewQuantity;
                 }
-
-                userBooks.Add(updated);
-
-                userBooksList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox),
-                    new Object[] { userBooksList, userBooks });
 
                 availableBooksList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox),
                     new Object[] { availableBooksList, availableBooks });
+
+                if (bookBorrowedDto.ByThisUser)
+                {
+                    userBooks.Add(updated);
+
+                    userBooksList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox),
+                        new Object[] {userBooksList, userBooks});
+                }
             }
+
             if (e.UserEventType == LibraryUserEvent.BookReturned)
             {
-                BookDTO bookDto = (BookDTO)e.Data;
+                BookReturnedDTO bookReturnedDto = (BookReturnedDTO)e.Data;
 
                 Book returnedAvailable = null;
                 foreach (Book availableBook in availableBooks)
                 {
-                    if (availableBook.Id == bookDto.Id)
+                    if (availableBook.Id == bookReturnedDto.Id)
                     {
                         returnedAvailable = availableBook;
                     }
                 }
                 if (returnedAvailable == null)
                 {
-                    returnedAvailable = new Book(bookDto.Id, bookDto.Author, bookDto.Title, 1);
+                    returnedAvailable = new Book(bookReturnedDto.Id, bookReturnedDto.Author, bookReturnedDto.Title, 1);
                     availableBooks.Add(returnedAvailable);
                 }
                 else
@@ -100,21 +104,24 @@ namespace client
                     returnedAvailable.Available++;
                 }
 
-                Book returnedUser = null;
-                foreach (Book userBook in userBooks)
-                {
-                    if (userBook.Id == bookDto.Id)
-                    {
-                        returnedUser = userBook;
-                    }
-                }
-                userBooks.Remove(returnedUser);
-
-                userBooksList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox),
-                    new Object[] {userBooksList, userBooks});
-
                 availableBooksList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox),
                     new Object[] { availableBooksList, availableBooks });
+
+                if (bookReturnedDto.ByThisUser)
+                {
+                    Book returnedUser = null;
+                    foreach (Book userBook in userBooks)
+                    {
+                        if (userBook.Id == bookReturnedDto.Id)
+                        {
+                            returnedUser = userBook;
+                        }
+                    }
+                    userBooks.Remove(returnedUser);
+
+                    userBooksList.BeginInvoke(new UpdateListBoxCallback(this.updateListBox),
+                        new Object[] {userBooksList, userBooks});
+                }
             }
         }
 

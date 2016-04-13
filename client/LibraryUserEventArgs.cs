@@ -4,7 +4,7 @@ namespace client
 {
     public enum LibraryUserEvent
     {
-        BookUpdated, BookReturned
+        BookBorrowed, BookReturned
     }
 
     public class LibraryUserEventArgs : EventArgs

@@ -3,16 +3,18 @@
 namespace networking.dto
 {
     [Serializable]
-    public class BookDTO
+    public class BookReturnedDTO
     {
         private int id;
         private String author, title;
+        private bool byThisUser;
 
-        public BookDTO(int id, string author, string title)
+        public BookReturnedDTO(int id, string author, string title, bool byThisUser)
         {
             this.id = id;
             this.author = author;
             this.title = title;
+            this.byThisUser = byThisUser;
         }
 
         public int Id
@@ -31,6 +33,12 @@ namespace networking.dto
         {
             get { return title; }
             set { title = value; }
+        }
+
+        public bool ByThisUser
+        {
+            get { return byThisUser; }
+            set { byThisUser = value; }
         }
     }
 }

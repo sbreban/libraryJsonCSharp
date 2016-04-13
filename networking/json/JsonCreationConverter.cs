@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace networking
+namespace networking.json
 {
     abstract class JsonCreationConverter<T> : JsonConverter
     {
